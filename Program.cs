@@ -1,23 +1,71 @@
 ﻿using System;
+using Character;
 
 class Program
 {
   static void Main()
   {
+    CharacterBase hero = new("勇者");
 
-    for (int i = 0; i < 10; i++)
+    Console.WriteLine("使用AD键左右移动");
+
+    int left = 44;
+    int right = 44;
+    bool toLeft = true;
+    bool jump = false;
+
+    Console.Clear();
+
+    while (true)
     {
-      Output.ResetLine($"当前执行 {i} 次!");
-      Thread.Sleep(1000);
+      string[] _h = {
+        "".PadLeft(left+right+3,' '),
+        "".PadLeft(left+right+3,' '),
+        "".PadLeft(left+right+3,' '),
+        "".PadLeft(left+right+3,' '),
+        "".PadLeft(left+right+3,' '),
+        "".PadLeft(left,' ')+(toLeft ? "  0` " : " `0 ")+"".PadRight(right, ' '),
+        "".PadLeft(left,' ')+" /|\\"+"".PadRight(right, ' '),
+        "".PadLeft(left,' ')+" /'\\ "+"".PadRight(right, ' '),
+        "".PadLeft(left+right+3,'-')
+      };
+
+      Output.ResetLine(String.Join('\n', _h));
+
+      jump = false;
+      var (l, t) = Console.GetCursorPosition();
+      var (key, _) = Output.ReadChar("");
+      Console.SetCursorPosition(l, 0);
+
+      if (key == 'a')
+      {
+        hero.MoveX(-1);
+        if (left - 1 >= 0)
+        {
+          left--;
+          right++;
+          toLeft = true;
+        }
+
+      }
+      else if (key == 'd')
+      {
+        hero.MoveX(1);
+        if (right - 1 >= 0)
+        {
+          right--;
+          left++;
+          toLeft = false;
+        }
+      }
+      else if (key == 'j')
+      {
+        if (!jump)
+        {
+          hero.MoveY(2);
+          jump = true;
+        }
+      }
     }
-
-    var (_char, _damage) = Output.ReadChar("请按任意键进行输出");
-    Console.WriteLine("输入 {0} 键", _char);
-    Attk(_damage);
-  }
-
-  private static void Attk(int damage)
-  {
-    Console.WriteLine("造成 {0} 伤害", damage);
   }
 }

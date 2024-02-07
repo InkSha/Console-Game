@@ -52,14 +52,32 @@ namespace Character
     }
   }
 
-  public class CharacterBase : CharacterAttributes
+  /// <summary>
+  /// 角色基类
+  /// </summary>
+  /// <param name="name">角色名称</param>
+  /// <param name="sex">角色性别</param>
+  /// <param name="age">角色年龄</param>
+  public class CharacterBase(
+    string name = "New Character!",
+    bool sex = false,
+    double age = 18
+    ) : CharacterAction
   {
     /// <summary> 角色名称 </summary>
-    protected string name = "New Character!";
+    protected string name = name;
     /// <summary> 角色年龄 </summary>
-    protected int age = 18;
+    protected double age = age;
+    /// <summary> 角色性别 </summary>
+    protected bool sex = sex;
 
-    CharacterBase() { }
-
+    /// <summary>
+    /// 读取角色信息
+    /// </summary>
+    /// <returns>角色信息</returns>
+    public (string, double, bool, string) ReadInfo()
+    {
+      return (name, age, sex, $"{name}, ${age}岁, ${(sex ? '男' : '女')}性。");
+    }
   }
 }
